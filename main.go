@@ -42,7 +42,6 @@ func returnTasks() {
 		if task.Completed {
 			status = "Done"
 		}
-
 		fmt.Printf("%d. %s	[%s]   -%s\n", i+1, task.TaskName, task.Priority, status)
 	}
 }
@@ -124,7 +123,7 @@ func main() {
 			case 3:
 				prior = High
 			default:
-				fmt.Print("Invaid priority, setting it to Low")
+				fmt.Print("Invaid priority, setting to Low\n")
 				prior = Low
 			}
 
@@ -157,6 +156,7 @@ func main() {
 
 			returnTasks()
 		case 4:
+			fmt.Println(" ")
 			returnTasks()
 
 		case 5:
@@ -174,7 +174,7 @@ func main() {
 			os.Exit(0)
 
 		default:
-			fmt.Print("Invalid Choice!")
+			fmt.Println("Invalid Choice!")
 		}
 	}
 }
