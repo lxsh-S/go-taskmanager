@@ -7,9 +7,31 @@ import (
 	"strconv"
 )
 
+type Priority int
+
+const (
+	Low Priority = iota
+	Medium
+	High
+)
+
 type Task struct {
 	TaskName  string
 	Completed bool
+	Priority  Priority
+}
+
+func (p Priority) String() string {
+	switch p {
+	case Low:
+		return "Low"
+	case Medium:
+		return "Medium"
+	case High:
+		return "High"
+	default:
+		return "Unknown"
+	}
 }
 
 var tasks []Task
@@ -21,12 +43,12 @@ func returnTasks() {
 			status = "Done"
 		}
 
-		fmt.Printf("%d. %s		-[%s]\n", i+1, task.TaskName, status)
+		fmt.Printf("%d. %s	[%s]   -%s\n", i+1, task.TaskName, task.Priority, status)
 	}
 }
 
-func addTasks(task string) {
-	newTask := Task{TaskName: task, Completed: false}
+func addTasks(task string, prr Priority) {
+	newTask := Task{TaskName: task, Completed: false, Priority: prr}
 
 	tasks = append(tasks, newTask)
 }
@@ -69,7 +91,7 @@ func main() {
 
 	var indexInput int
 	var editTask, newTask string
-
+	var prior Priority
 	reader := bufio.NewScanner(os.Stdin)
 
 	for {
@@ -90,7 +112,23 @@ func main() {
 			reader.Scan()
 			newTask = reader.Text()
 
-			addTasks(newTask)
+			fmt.Print("Task Priority (1=Low, 2=Medium, 3=High): ")
+			reader.Scan()
+			priorInput, _ := strconv.Atoi(reader.Text())
+
+			switch priorInput {
+			case 1:
+				prior = Low
+			case 2:
+				prior = Medium
+			case 3:
+				prior = High
+			default:
+				fmt.Print("Invaid priority, setting it to Low")
+				prior = Low
+			}
+
+			addTasks(newTask, prior)
 			fmt.Println(" ")
 			returnTasks()
 
